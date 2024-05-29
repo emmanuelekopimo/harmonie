@@ -48,6 +48,11 @@
   dependencies:
     "@edge-runtime/primitives" "3.0.3"
 
+"@google/generative-ai@^0.11.4":
+  version "0.11.4"
+  resolved "https://registry.npmjs.org/@google/generative-ai/-/generative-ai-0.11.4.tgz"
+  integrity sha512-hlw+E9Prv9aUIQISRnLSXi4rukFqKe5WhxPvzBccTvIvXjw2BHMFOJWSC/Gq7WE0W+L/qRHGmYxopmx9qjrB9w==
+
 "@jridgewell/resolve-uri@^3.0.3":
   version "3.1.1"
   resolved "https://registry.npmjs.org/@jridgewell/resolve-uri/-/resolve-uri-3.1.1.tgz"
