@@ -89,7 +89,7 @@ const greeting = () => async (ctx: Context) => {
   const text = ctx?.text;
   const harmonyResponse = await harmony(text);
   if (messageId) {
-    await replyToMessage(ctx, messageId, `${harmonyResponse}`);
+    await replyToMessage(ctx, messageId, `${harmonyResponse} ${messageId}`);
   }
 };
 
