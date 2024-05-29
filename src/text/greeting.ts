@@ -8,7 +8,7 @@ import {
 
 const debug = createDebug('bot:greeting_text');
 const MODEL_NAME: string = 'gemini-1.5-pro';
-const API_KEY: string = 'YOUR_API_KEY';
+const API_KEY: string = process.env.AI_API_KEY!;
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({ model: MODEL_NAME });
