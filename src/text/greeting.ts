@@ -87,9 +87,9 @@ const greeting = () => async (ctx: Context) => {
   const messageId = ctx.message?.message_id;
   const userName = `${ctx.message?.from.first_name} ${ctx.message?.from.last_name}`;
   const text = ctx?.text;
-  const harmonyResponse = harmony(text);
+  const harmonyResponse = await harmony(text);
   if (messageId) {
-    await replyToMessage(ctx, messageId, `${JSON.stringify(harmonyResponse)}`);
+    await replyToMessage(ctx, messageId, `${harmonyResponse}`);
   }
 };
 
