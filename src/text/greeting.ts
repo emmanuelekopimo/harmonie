@@ -89,7 +89,10 @@ const greeting = () => async (ctx: Context) => {
   const text = ctx?.text;
   const harmonyResponse = await harmony(text);
   if (messageId) {
-    await replyToMessage(ctx, messageId, `${harmonyResponse} ${JSON.stringify(ctx.message)}`);
+    await ctx.replyWithMarkdownV2(
+      `${harmonyResponse} ${JSON.stringify(ctx.message)}`,
+      { parse_mode: 'Markdown' },
+    );
   }
 };
 
