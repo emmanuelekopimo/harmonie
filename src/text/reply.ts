@@ -7,7 +7,6 @@ import {
 } from '@google/generative-ai';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
-import { getAnalytics } from 'firebase/analytics';
 
 const debug = createDebug('bot:greeting_text');
 const MODEL_NAME: string = 'gemini-1.5-pro';
@@ -74,7 +73,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
 // Initialize Cloud Firestore and get a reference to the service
 // TODO: Make use of
