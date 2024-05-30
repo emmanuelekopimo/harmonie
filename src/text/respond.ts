@@ -111,7 +111,7 @@ const respond = () => async (ctx: Context) => {
   getDoc(userDocRef).then(async (doc) => {
     if (doc.exists()) {
       // If there is an already existing chat. Build upon the chat
-      documentExist = doc.data();
+      documentExist = 'EXISTS';
     } else {
     }
   });
