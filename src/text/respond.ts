@@ -81,7 +81,7 @@ const replyToMessage = (ctx: Context, messageId: number, string: string) =>
     reply_parameters: { message_id: messageId },
   });
 
-const greeting = () => async (ctx: Context) => {
+const respond = () => async (ctx: Context) => {
   debug('Triggered "greeting" text command');
 
   const messageId = ctx.message?.message_id;
@@ -97,4 +97,4 @@ const greeting = () => async (ctx: Context) => {
   }
 };
 
-export { greeting };
+export { respond };
