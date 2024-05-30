@@ -114,14 +114,14 @@ const respond = () => async (ctx: Context) => {
       documentExist = 'EXISTS';
     } else {
     }
+    if (messageId) {
+      await replyToMessage(
+        ctx,
+        messageId,
+        `${harmonyResponse} ${JSON.stringify(ctx.message)} ${documentExist}`,
+      );
+    }
   });
-  if (messageId) {
-    await replyToMessage(
-      ctx,
-      messageId,
-      `${harmonyResponse} ${JSON.stringify(ctx.message)} ${documentExist}`,
-    );
-  }
 };
 
 export { respond };
