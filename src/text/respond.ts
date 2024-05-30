@@ -154,6 +154,10 @@ const respond = () => async (ctx: Context) => {
       `${harmonyText} ${JSON.stringify(ctx.message)} DOCDATA:${JSON.stringify(docData)} NEW_PARTS:${JSON.stringify(new_text_parts)}`,
     );
   }
+  await setDoc(doc(db, 'chats', 'sample'), {
+    id: 'sample',
+    parts: new_text_parts,
+  });
 };
 
 export { respond };
