@@ -6,9 +6,11 @@
   "author": "Mark Pavlov (https://github.com/sollidy)",
   "homepage": "https://github.com/sollidy/telegram-bot-vercel-boilerplate",
   "dependencies": {
+    "@firebase/firestore": "^4.6.3",
     "@google/generative-ai": "^0.11.4",
     "@vercel/node": "^3.0.1",
     "dotenv-cli": "^7.4.1",
+    "firebase": "^10.12.1",
     "telegraf": "^4.16.3"
   },
   "devDependencies": {

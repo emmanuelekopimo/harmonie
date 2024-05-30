@@ -5,6 +5,9 @@ import {
   HarmCategory,
   HarmBlockThreshold,
 } from '@google/generative-ai';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
+import { getAnalytics } from 'firebase/analytics';
 
 const debug = createDebug('bot:greeting_text');
 const MODEL_NAME: string = 'gemini-1.5-pro';
@@ -56,6 +59,28 @@ const safetySettings: SafetySetting[] = [
   },
 ];
 
+// TODO: Replace the following with your app's Firebase project configuration
+// See: https://support.google.com/firebase/answer/7015592
+const firebaseConfig = {
+  apiKey: 'AIzaSyBdtvRuYdMGu6QPozE8E1rnoturyqaiDlo',
+  authDomain: 'harmonie-ai.firebaseapp.com',
+  databaseURL: 'https://harmonie-ai-default-rtdb.firebaseio.com',
+  projectId: 'harmonie-ai',
+  storageBucket: 'harmonie-ai.appspot.com',
+  messagingSenderId: '684226874538',
+  appId: '1:684226874538:web:6f5d6adc110ca0da3014d3',
+  measurementId: 'G-S7S4W85DB6',
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+// Initialize Cloud Firestore and get a reference to the service
+// TODO: Make use of
+const db = getFirestore(app);
+// await setDoc(doc(db, 'cities', 'new-city-id'), data);
+
 async function harmony(prompt: String | undefined): Promise<String> {
   const parts: ContentPart[] = [
     {
@@ -81,20 +106,36 @@ const replyToMessage = (ctx: Context, messageId: number, string: string) =>
     reply_parameters: { message_id: messageId },
   });
 
-const greeting = () => async (ctx: Context) => {
+const reply = () => async (ctx: Context) => {
   debug('Triggered "greeting" text command');
-
   const messageId = ctx.message?.message_id;
-  const userName = `${ctx.message?.from.first_name} ${ctx.message?.from.last_name}`;
-  const text = ctx?.text;
-  const harmonyResponse = await harmony(text);
   if (messageId) {
-    await replyToMessage(
-      ctx,
-      messageId,
-      `${harmonyResponse} ${JSON.stringify(ctx.message)}`,
-    );
+    const userName = `${ctx.message?.from.first_name}`;
+    const text = ctx?.text;
+    const userId = ctx.from?.id.toString()!;
+    const userDocRef = doc(db, 'chats', userId);
+    getDoc(userDocRef)
+      .then(async (doc) => {
+        let harmonyResponse;
+        let docData;
+        if (doc.exists()) {
+          docData = doc.data();
+          harmonyResponse = await harmony(text);
+        } else {
+          setDoc(userDocRef, { id: userId });
+          docData = {};
+          harmonyResponse = await harmony(text);
+        }
+        await replyToMessage(
+          ctx,
+          messageId,
+          `${harmonyResponse} ${JSON.stringify(ctx.message)} ${JSON.stringify(docData)}`,
+        );
+      })
+      .catch((error) => {
+        console.log('Error getting document:', error);
+      });
   }
 };
 
-export { greeting };
+export { reply };
