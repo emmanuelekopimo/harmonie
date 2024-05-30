@@ -62,7 +62,7 @@ const safetySettings: SafetySetting[] = [
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://support.google.com/firebase/answer/7015592
 const firebaseConfig = {
-  apiKey: 'AIzaSyBdtvRuYdMGu6QPozE8E1rnoturyqaiDlo',
+  apiKey: process.env.FIREBASE_KEY,
   authDomain: 'harmonie-ai.firebaseapp.com',
   databaseURL: 'https://harmonie-ai-default-rtdb.firebaseio.com',
   projectId: 'harmonie-ai',
@@ -136,10 +136,11 @@ const reply = () => async (ctx: Context) => {
         }
         let new_text_parts = harmonyOutput.text_parts;
         setDoc(userDocRef, { id: userId, text_parts: new_text_parts });
+        console.log(`Replied to Telegram user: ${userId} ${userName}`);
         await replyToMessage(
           ctx,
           messageId,
-          `${harmonyResponse} ${JSON.stringify(ctx.message)}`,
+          `${harmonyResponse} ${JSON.stringify(ctx.message)} ${JSON.stringify(new_text_parts)}`,
         );
       })
       .catch((error) => {
