@@ -101,22 +101,24 @@ const replyToMessage = (ctx: Context, messageId: number, string: string) =>
 const respond = () => async (ctx: Context) => {
   debug('Triggered "greeting" text command');
 
-  const messageId = ctx.message?.message_id;
-  const userName = `${ctx.message?.from.first_name} ${ctx.message?.from.last_name}`;
-  const text = ctx?.text;
-  const harmonyResponse = await harmony(text);
-  //
-  let document = {};
-  const docSnap = await getDoc(doc(db, 'chats', 'sample'));
-  const docExists = docSnap.exists();
+  let messageId = ctx.message?.message_id;
+  let userName = `${ctx.message?.from.first_name} ${ctx.message?.from.last_name}`;
+  let text = ctx?.text;
+  let userId = ctx.from?.id.toString()!;
+  let docSnap = await getDoc(doc(db, 'chats', 'sample'));
+  let docExists = docSnap.exists();
+  let docData = {};
   if (docExists) {
-    document = docSnap.data();
+    docData = docSnap.data()!;
+  } else {
+    //
   }
+  const harmonyResponse = await harmony(text);
   if (messageId) {
     await replyToMessage(
       ctx,
       messageId,
-      `${harmonyResponse} ${JSON.stringify(ctx.message)} ${JSON.stringify(document)}`,
+      `${harmonyResponse} ${JSON.stringify(ctx.message)} ${JSON.stringify(docData)}`,
     );
   }
 };
