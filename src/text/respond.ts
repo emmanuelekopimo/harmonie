@@ -134,7 +134,7 @@ const respond = () => async (ctx: Context) => {
   let userName = `${ctx.message?.from.first_name} ${ctx.message?.from.last_name}`;
   let text = ctx?.text;
   let userId = ctx.from?.id.toString()!;
-  let docSnap = await getDoc(doc(db, 'chats', 'sample'));
+  let docSnap = await getDoc(doc(db, 'chats', userId));
   let docExists = docSnap.exists();
   let docData;
   if (docExists) {
@@ -154,8 +154,8 @@ const respond = () => async (ctx: Context) => {
       `${harmonyText} ${JSON.stringify(ctx.message)} DOCDATA:${JSON.stringify(docData)} NEW_PARTS:${JSON.stringify(new_text_parts)}`,
     );
   }
-  await setDoc(doc(db, 'chats', 'sample'), {
-    id: 'sample',
+  await setDoc(doc(db, 'chats', userId), {
+    userId: userId,
     parts: new_text_parts,
   });
 };
