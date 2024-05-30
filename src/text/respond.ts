@@ -108,7 +108,7 @@ const respond = () => async (ctx: Context) => {
   //
   var documentExist = '_';
   const userDocRef = doc(db, 'chats', 'sample');
-  const docExists = await (await getDoc(doc(db, 'chats', 'sample'))).exists();
+  const docExists = (await getDoc(doc(db, 'chats', 'sample'))).exists();
 
   if (messageId) {
     await replyToMessage(
