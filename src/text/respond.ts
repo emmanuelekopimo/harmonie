@@ -106,15 +106,17 @@ const respond = () => async (ctx: Context) => {
   const text = ctx?.text;
   const harmonyResponse = await harmony(text);
   //
-  var documentExist = '_';
-  const userDocRef = doc(db, 'chats', 'sample');
-  const docExists = (await getDoc(doc(db, 'chats', 'sample'))).exists();
-
+  let document = {};
+  const docSnap = await getDoc(doc(db, 'chats', 'sample'));
+  const docExists = docSnap.exists();
+  if (docExists) {
+    document = docSnap.data();
+  }
   if (messageId) {
     await replyToMessage(
       ctx,
       messageId,
-      `${harmonyResponse} ${JSON.stringify(ctx.message)} ${docExists}`,
+      `${harmonyResponse} ${JSON.stringify(ctx.message)} ${JSON.stringify(document)}`,
     );
   }
 };
