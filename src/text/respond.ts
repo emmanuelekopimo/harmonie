@@ -108,20 +108,24 @@ const respond = () => async (ctx: Context) => {
   //
   var documentExist = '_';
   const userDocRef = doc(db, 'chats', 'sample');
-  getDoc(userDocRef).then(async (doc) => {
-    if (doc.exists()) {
-      // If there is an already existing chat. Build upon the chat
-      documentExist = 'EXISTS';
-    } else {
-    }
-    if (messageId) {
-      await replyToMessage(
-        ctx,
-        messageId,
-        `${harmonyResponse} ${JSON.stringify(ctx.message)} ${documentExist}`,
-      );
-    }
-  });
+  getDoc(userDocRef)
+    .then(async (doc) => {
+      if (doc.exists()) {
+        // If there is an already existing chat. Build upon the chat
+        documentExist = 'EXISTS';
+      } else {
+      }
+    })
+    .catch(async (err) => {
+      await replyToMessage(ctx, messageId!, JSON.stringify(err));
+    });
+  if (messageId) {
+    await replyToMessage(
+      ctx,
+      messageId,
+      `${harmonyResponse} ${JSON.stringify(ctx.message)} ${documentExist}`,
+    );
+  }
 };
 
 export { respond };
