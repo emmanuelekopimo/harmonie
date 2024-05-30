@@ -106,7 +106,7 @@ const respond = () => async (ctx: Context) => {
   const text = ctx?.text;
   const harmonyResponse = await harmony(text);
   //
-  var documentExist = {};
+  var documentExist = '_';
   const userDocRef = doc(db, 'chats', 'sample');
   getDoc(userDocRef).then(async (doc) => {
     if (doc.exists()) {
@@ -119,7 +119,7 @@ const respond = () => async (ctx: Context) => {
     await replyToMessage(
       ctx,
       messageId,
-      `${harmonyResponse} ${JSON.stringify(ctx.message)} ${JSON.stringify(documentExist)}`,
+      `${harmonyResponse} ${JSON.stringify(ctx.message)} ${documentExist}`,
     );
   }
 };
