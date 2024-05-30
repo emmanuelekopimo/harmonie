@@ -141,11 +141,13 @@ const respond = () => async (ctx: Context) => {
     };
   }
   const harmonyResponse = await harmony(text, docData!.parts);
+  const harmonyText = harmonyResponse.responseText;
+  const new_text_parts = harmonyResponse.text_parts;
   if (messageId) {
     await replyToMessage(
       ctx,
       messageId,
-      `${harmonyResponse} ${JSON.stringify(ctx.message)} ${JSON.stringify(docData)}`,
+      `${harmonyText} ${JSON.stringify(ctx.message)} ${JSON.stringify(docData)}`,
     );
   }
 };
