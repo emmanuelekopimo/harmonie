@@ -72,7 +72,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const userDocRef = doc(db, 'chats', 'sample');
 
 async function harmony(prompt: String | undefined): Promise<String> {
   const parts: ContentPart[] = [
@@ -108,6 +107,7 @@ const respond = () => async (ctx: Context) => {
   const harmonyResponse = await harmony(text);
   //
   var documentExist = {};
+  const userDocRef = doc(db, 'chats', 'sample');
   getDoc(userDocRef).then(async (doc) => {
     if (doc.exists()) {
       // If there is an already existing chat. Build upon the chat
