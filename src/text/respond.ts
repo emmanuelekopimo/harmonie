@@ -5,6 +5,8 @@ import {
   HarmCategory,
   HarmBlockThreshold,
 } from '@google/generative-ai';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 
 const debug = createDebug('bot:greeting_text');
 const MODEL_NAME: string = 'gemini-1.5-pro';
@@ -56,6 +58,22 @@ const safetySettings: SafetySetting[] = [
   },
 ];
 
+// See: https://support.google.com/firebase/answer/7015592
+const firebaseConfig = {
+  apiKey: process.env.FIREBASE_KEY,
+  authDomain: 'harmonie-ai.firebaseapp.com',
+  databaseURL: 'https://harmonie-ai-default-rtdb.firebaseio.com',
+  projectId: 'harmonie-ai',
+  storageBucket: 'harmonie-ai.appspot.com',
+  messagingSenderId: '684226874538',
+  appId: '1:684226874538:web:6f5d6adc110ca0da3014d3',
+  measurementId: 'G-S7S4W85DB6',
+};
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const userDocRef = doc(db, 'chats', 'sample');
+
 async function harmony(prompt: String | undefined): Promise<String> {
   const parts: ContentPart[] = [
     {
@@ -88,11 +106,20 @@ const respond = () => async (ctx: Context) => {
   const userName = `${ctx.message?.from.first_name} ${ctx.message?.from.last_name}`;
   const text = ctx?.text;
   const harmonyResponse = await harmony(text);
+  //
+  var documentExist = {};
+  getDoc(userDocRef).then(async (doc) => {
+    if (doc.exists()) {
+      // If there is an already existing chat. Build upon the chat
+      documentExist = doc.data();
+    } else {
+    }
+  });
   if (messageId) {
     await replyToMessage(
       ctx,
       messageId,
-      `${harmonyResponse} ${JSON.stringify(ctx.message)}`,
+      `${harmonyResponse} ${JSON.stringify(ctx.message)} ${JSON.stringify(documentExist)}`,
     );
   }
 };
