@@ -126,6 +126,7 @@ async function harmony(
 const replyToMessage = (ctx: Context, messageId: number, string: string) =>
   ctx.reply(string, {
     reply_parameters: { message_id: messageId },
+    parse_mode: 'MarkdownV2',
   });
 
 const respond = () => async (ctx: Context) => {
