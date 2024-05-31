@@ -124,7 +124,7 @@ async function harmony(
 }
 
 const replyToMessage = (ctx: Context, messageId: number, string: string) =>
-  ctx.reply(string, {
+  ctx.replyWithMarkdownV2(string, {
     reply_parameters: { message_id: messageId },
   });
 
