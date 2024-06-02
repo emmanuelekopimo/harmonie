@@ -150,6 +150,7 @@ const respond = () => async (ctx: Context) => {
   const harmonyResponse = await harmony(text, firstName!, docData!.parts);
   const harmonyText = harmonyResponse.responseText;
   const new_text_parts = harmonyResponse.text_parts;
+
   if (messageId) {
     await replyToMessage(ctx, messageId, `${harmonyText}`);
   }
