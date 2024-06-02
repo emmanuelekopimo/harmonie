@@ -108,10 +108,10 @@ const replyToMessage = (
   messageId: number,
   chatId: string,
   string: string,
-) => ctx.replyWithMarkdownV2(string);
-// ctx.reply(string, {
-//   reply_parameters: { message_id: messageId }
-// });
+) =>
+  ctx.reply(string, {
+    reply_parameters: { message_id: messageId },
+  });
 
 const respond = () => async (ctx: Context) => {
   debug('Triggered "greeting" text command');
