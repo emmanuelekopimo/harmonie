@@ -123,7 +123,7 @@ const respond = () => async (ctx: Context) => {
   let firstName = ctx.message?.from.first_name;
   let text = ctx?.text;
   let userId = ctx.from?.id.toString()!;
-  let docSnap = await getDoc(doc(db, `${PROJECT_ID}/chats`, userId));
+  let docSnap = await getDoc(doc(db, PROJECT_ID, userId));
   let docExists = docSnap.exists();
   let docData;
   if (docExists) {
@@ -140,7 +140,7 @@ const respond = () => async (ctx: Context) => {
   if (messageId) {
     await replyToMessage(ctx, messageId, chatId, `${harmonyText}`);
   }
-  await setDoc(doc(db, `${PROJECT_ID}/chats`, userId), {
+  await setDoc(doc(db, PROJECT_ID, userId), {
     userId: userId,
     userName: userName,
     parts: new_text_parts,
