@@ -11,6 +11,7 @@ import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 const debug = createDebug('bot:greeting_text');
 const MODEL_NAME: string = 'gemini-1.5-pro';
 const API_KEY: string = process.env.AI_API_KEY!;
+const PROJECT_ID: string = process.env.PROJECT_ID!;
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 const model = genAI.getGenerativeModel({ model: MODEL_NAME });
@@ -122,7 +123,7 @@ const respond = () => async (ctx: Context) => {
   let firstName = ctx.message?.from.first_name;
   let text = ctx?.text;
   let userId = ctx.from?.id.toString()!;
-  let docSnap = await getDoc(doc(db, 'chats', userId));
+  let docSnap = await getDoc(doc(db, `${PROJECT_ID}/chats`, userId));
   let docExists = docSnap.exists();
   let docData;
   if (docExists) {
@@ -139,7 +140,7 @@ const respond = () => async (ctx: Context) => {
   if (messageId) {
     await replyToMessage(ctx, messageId, chatId, `${harmonyText}`);
   }
-  await setDoc(doc(db, 'chats', userId), {
+  await setDoc(doc(db, `${PROJECT_ID}/chats`, userId), {
     userId: userId,
     userName: userName,
     parts: new_text_parts,
